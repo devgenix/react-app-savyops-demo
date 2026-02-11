@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 
 const App: React.FC = () => {
   const [count, setCount] = useState<number>(0);
+  const MAX_LIMIT = 10;
+
+  const increment = () => {
+    if (count < MAX_LIMIT) {
+      setCount(count + 1);
+    }
+  };
+
+  const decrement = () => setCount(count - 1);
+  const reset = () => setCount(0);
 
   return (
     <div style={styles.container}>
@@ -13,18 +23,26 @@ const App: React.FC = () => {
       <main style={styles.main}>
         <div style={styles.card}>
           <h2>Count is: {count}</h2>
+          {count >= MAX_LIMIT && <p style={{ color: 'red' }}>Max limit reached!</p>}
           <div style={styles.buttonGroup}>
             <button 
-              onClick={() => setCount(count + 1)}
-              style={styles.button}
+              onClick={increment} 
+              style={{...styles.button, opacity: count >= MAX_LIMIT ? 0.5 : 1}}
+              disabled={count >= MAX_LIMIT}
             >
               Increment
             </button>
-            <button
-              onClick={() => setCount(count - 1)} 
+            <button 
+              onClick={decrement} 
               style={{...styles.button, backgroundColor: '#dc3545'}}
             >
               Decrement
+            </button>
+            <button 
+              onClick={reset} 
+              style={{...styles.button, backgroundColor: '#6c757d'}}
+            >
+              Reset
             </button>
           </div>
         </div>
@@ -57,6 +75,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   buttonGroup: {
     display: 'flex',
+    flexDirection: 'column',
     gap: '10px',
     justifyContent: 'center',
     marginTop: '20px',
